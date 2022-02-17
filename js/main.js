@@ -8,7 +8,7 @@ let todoArray;
 const addTodo = () => {
     if(input.value !== ''){
         let todoItem = {
-            text: input.value,
+            description: input.value,
             completed: false
         };
         todoArray.push(todoItem);
@@ -25,16 +25,6 @@ input.addEventListener('keydown', e=>{
 
 const upadateLocalStorage = () => localStorage.setItem('todo', JSON.stringify(todoArray));
 
-const checked = (i) => {
-    if(todoArray[i].completed === false){
-        todoArray[i].completed = true;
-        upadateLocalStorage();
-    } else {
-        todoArray[i].completed = false;
-        upadateLocalStorage();
-    }
-};
-
 const updateTodoTemplate = () => {
     todoContent.innerHTML = '';
     
@@ -43,8 +33,8 @@ const updateTodoTemplate = () => {
         <div class="todo-item">
             <label class="todo-label">
                 <input class="todo__real-checkbox" type="checkbox">
-                <span onclick="checked(${i})" class="todo__fake-checkbox"></span>
-                <p onclick="checked(${i})" class="todo__text">${item.text}</p>
+                <span onclick="completeTodo(${i})" class="todo__fake-checkbox ${item.completed ? 'checked' : ''}"></span>
+                <p onclick="completeTodo(${i})" class="todo__text ${item.completed ? 'checked' : ''}">${item.description}</p>
             </label>
             <svg onclick="deleteTodo(${i})" class="todo__delete svg" width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 11V20.4C19 20.7314 18.7314 21 18.4 21H5.6C5.26863 21 5 20.7314 5 20.4V11" />
@@ -60,8 +50,15 @@ const updateTodoTemplate = () => {
 };
 updateTodoTemplate();
 
+const completeTodo = (i) => {
+    todoArray[i].completed = !todoArray[i].completed;
+    todoContent.children[i].querySelector('.todo__fake-checkbox').classList.toggle('checked');
+    todoContent.children[i].querySelector('.todo__text').classList.toggle('checked');
+    upadateLocalStorage();
+};
+
 const deleteTodo = (i) => {
-    todoArray.splice(i,1);
+    todoArray.splice(i, 1);
     upadateLocalStorage();
     updateTodoTemplate();
 };

@@ -91,7 +91,7 @@ body {
     cursor: pointer;
     position: relative;
 }
-.todo__real-checkbox:checked + .todo__fake-checkbox::before {
+.todo__fake-checkbox.checked::before {
     content: '';
     display: inline-block;
     position: absolute;
@@ -103,7 +103,7 @@ body {
     top: 50%;
     left: 50%;
 }
-.todo__real-checkbox:checked ~ .todo__text {
+.todo__text.checked {
     text-decoration: line-through;
 }
 .todo__text {
